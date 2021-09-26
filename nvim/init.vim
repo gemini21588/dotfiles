@@ -36,6 +36,7 @@ Plug 'preservim/nerdcommenter'
 Plug 'tomtom/tcomment_vim'
 Plug 'AndrewRadev/tagalong.vim' " rename html tags
 Plug 'jiangmiao/auto-pairs'
+Plug 'tpope/vim-surround'
 
 " Search
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -53,9 +54,18 @@ Plug 'editorconfig/editorconfig-vim'
 " Initialize plugin system
 call plug#end()
 
+" Disable space behavior
+nnoremap <SPACE> <Nop>
+" remap leader key to space
+let mapleader = "\<Space>"
+
+nnoremap J 5j
+nnoremap K 5k
+nnoremap <leader>j J
 inoremap jk <ESC>
 vmap ++ <plug>NERDCommenterToggle
 nmap ++ <plug>NERDCommenterToggle
+nnoremap <leader>/ :noh<CR>
 
 " Set vim default flags
 set mouse=a                 " enable mouse
@@ -156,14 +166,14 @@ if (has('termguicolors'))
   set termguicolors
 endif
 
-colorscheme solarized8_flat
+colorscheme solarized8_high
 " material
 
 
 " Transparent terminal background
-" highlight Normal     ctermbg=NONE guibg=NONE
-" highlight LineNr     ctermbg=NONE guibg=NONE
-" highlight SignColumn ctermbg=NONE guibg=NONE
+highlight Normal     ctermbg=NONE guibg=NONE
+highlight LineNr     ctermbg=NONE guibg=NONE
+highlight SignColumn ctermbg=NONE guibg=NONE
 
 " Start NERDTree settings
 " Open NERDTree automatically
@@ -185,6 +195,8 @@ let g:NERDTreeColorMapCustom = {
     \ "Ignored"   : "#808080"
     \ }
 let g:NERDTreeIgnore = ['^node_modules$']
+let NERDTreeAutoDeleteBuffer = 1
+let NERDTreeMinimalUI = 1
 
 " sync open file with NERDTree
 " " Check if NERDTree is open or active
@@ -204,8 +216,9 @@ endfunction
 " Highlight currently open buffer in NERDTree
 autocmd BufEnter * call SyncTree()
 
-nmap <C-n> :NERDTreeToggle<CR>
-let NERDTreeMapActivateNode='<space>'
+nnoremap <leader>n :NERDTreeToggle<CR>
+nmap <leader>\ <C-\>
+let NERDTreeMapActivateNode='<leader><space>'
 
 let g:WebDevIconsNerdTreeBeforeGlyphPadding = ""
 let g:WebDevIconsUnicodeDecorateFolderNodes = v:true
@@ -224,32 +237,26 @@ let g:WebDevIconsUnicodeDecorateFolderNodes = v:true
 
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+"inoremap <silent><expr> <TAB>
+      "\ pumvisible() ? "\<C-n>" :
+      "\ <SID>check_back_space() ? "\<TAB>" :
+      "\ coc#refresh()
+"inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
+"function! s:check_back_space() abort
+  "let col = col('.') - 1
+  "return !col || getline('.')[col - 1]  =~# '\s'
+"endfunction
 
-" inoremap <expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-" inoremap <expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<TAB>"
+" Use <Tab> and <S-Tab> to navigate the completion list
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-" Use tab for confirm selected autocomplete item
-"inoremap <silent><expr> <tab> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<TAB>"
-"inoremap <silent><expr> <cr> "\<c-g>u\<CR>"
+" make <cr> select the first completion item and confirm the completion when no item has been selected
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
 
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
-
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-" Or use `complete_info` if your vim support it, like:
-" inoremap <expr> <cr> complete_nfo()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -261,7 +268,7 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gr <Plug>(coc-references)
 
 " Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+nnoremap <silent> gK :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -352,7 +359,7 @@ nnoremap <c-x> :bp \|bd #<cr>   " close current buffer
 
 " handle cursor position
 " inoremap <silent> <C-b> <Enter><Esc><S-o>
-imap <silent> >> <C-y>,<Enter><Esc><S-o>
+"imap <silent> >> <C-y>,<Enter><Esc><S-o>
 " imap <silent> >>> <C-y>,<C-b>
 
 " Setting fzf search file from root git directory
@@ -365,8 +372,8 @@ function! s:find_git_root()
 endfunction
 
 command! ProjectFiles execute 'Files' s:find_git_root()
-nnoremap ff :ProjectFiles<CR>
-nnoremap rg :Rg<CR>
+nnoremap <leader>ff :ProjectFiles<CR>
+nnoremap <leader>fr :Rg<CR>
 
 " remove trailing whitespace on save
 autocmd BufWritePre * %s/\s\+$//e
@@ -419,3 +426,9 @@ fu! NERDCommenter_after()
   let g:ft = ''
   endif
 endfu
+
+" Disable arrow keys
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+noremap <Left> <Nop>
+noremap <Right> <Nop>
