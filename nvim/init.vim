@@ -27,7 +27,6 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mattn/emmet-vim'
 Plug 'dominikduda/vim_es7_javascript_react_snippets'
 Plug 'rodrigore/coc-tailwind-intellisense', {'do': 'npm install'}
-" Plug 'SirVer/ultisnips'
 
 " Code Utils
 Plug 'preservim/nerdcommenter'
@@ -61,11 +60,20 @@ let mapleader = "\<Space>"
 
 nnoremap J 5j
 nnoremap K 5k
+nnoremap H ^
+nnoremap L g_
 nnoremap <leader>j J
 inoremap jk <ESC>
+inoremap kj <ESC>
 vmap ++ <plug>NERDCommenterToggle
 nmap ++ <plug>NERDCommenterToggle
 nnoremap <leader>/ :noh<CR>
+
+" Disable arrow keys
+"noremap <Up> <Nop>
+"noremap <Down> <Nop>
+"noremap <Left> <Nop>
+"noremap <Right> <Nop>
 
 " Set vim default flags
 set mouse=a                 " enable mouse
@@ -167,6 +175,7 @@ if (has('termguicolors'))
 endif
 
 colorscheme solarized8_high
+"colorscheme gruvbox
 " material
 
 
@@ -182,7 +191,6 @@ autocmd VimEnter * NERDTree
 autocmd BufEnter NERD_tree* :LeadingSpaceDisable
 
 let g:NERDTreeGitStatusWithFlags = 1
-let g:WebDevIconsUnicodeDecorateFolderNodes = 1
 let g:NERDTreeGitStatusNodeColorization = 1
 let g:NERDTreeColorMapCustom = {
     \ "Staged"    : "#0ee375",
@@ -237,23 +245,23 @@ let g:WebDevIconsUnicodeDecorateFolderNodes = v:true
 
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-"inoremap <silent><expr> <TAB>
-      "\ pumvisible() ? "\<C-n>" :
-      "\ <SID>check_back_space() ? "\<TAB>" :
-      "\ coc#refresh()
-"inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
 
-"function! s:check_back_space() abort
-  "let col = col('.') - 1
-  "return !col || getline('.')[col - 1]  =~# '\s'
-"endfunction
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
 
 " Use <Tab> and <S-Tab> to navigate the completion list
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+"inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+"inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " make <cr> select the first completion item and confirm the completion when no item has been selected
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
+inoremap <silent><expr> <Tab> pumvisible() ? coc#_select_confirm() : "\<Tab>"
 
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
@@ -359,7 +367,7 @@ nnoremap <c-x> :bp \|bd #<cr>   " close current buffer
 
 " handle cursor position
 " inoremap <silent> <C-b> <Enter><Esc><S-o>
-"imap <silent> >> <C-y>,<Enter><Esc><S-o>
+imap <silent> >> <Enter><Esc><S-o>
 " imap <silent> >>> <C-y>,<C-b>
 
 " Setting fzf search file from root git directory
@@ -376,7 +384,7 @@ nnoremap <leader>ff :ProjectFiles<CR>
 nnoremap <leader>fr :Rg<CR>
 
 " remove trailing whitespace on save
-autocmd BufWritePre * %s/\s\+$//e
+"autocmd BufWritePre * %s/\s\+$//e
 
 let g:tagalong_additional_filetypes = ['svelte']
 
@@ -426,9 +434,3 @@ fu! NERDCommenter_after()
   let g:ft = ''
   endif
 endfu
-
-" Disable arrow keys
-noremap <Up> <Nop>
-noremap <Down> <Nop>
-noremap <Left> <Nop>
-noremap <Right> <Nop>
