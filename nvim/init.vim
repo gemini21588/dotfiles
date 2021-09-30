@@ -36,6 +36,7 @@ Plug 'tomtom/tcomment_vim'
 Plug 'AndrewRadev/tagalong.vim' " rename html tags
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-surround'
+Plug 'alvan/vim-closetag'
 
 " Search
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -99,6 +100,8 @@ set autochdir
 set ignorecase
 set laststatus=2
 set showtabline=2
+set nohlsearch
+set noswapfile
 " set nowrap
 
 
@@ -367,8 +370,7 @@ nnoremap <c-x> :bp \|bd #<cr>   " close current buffer
 
 " handle cursor position
 " inoremap <silent> <C-b> <Enter><Esc><S-o>
-imap <silent> >> <Enter><Esc><S-o>
-" imap <silent> >>> <C-y>,<C-b>
+imap <silent> ;; <Enter><Esc><S-o>
 
 " Setting fzf search file from root git directory
 " set wildmode=list:longest,list:full
@@ -434,3 +436,6 @@ fu! NERDCommenter_after()
   let g:ft = ''
   endif
 endfu
+
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js,*.ts,*.jsx,*.tsx'
+let g:closetag_emptyTags_caseSensitive = 1
