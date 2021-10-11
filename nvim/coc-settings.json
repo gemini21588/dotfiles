@@ -12,16 +12,13 @@
     "svelte",
     "html"
   ],
+  "javascript.suggest.completeFunctionCalls": false,
+  "typescript.suggest.completeFunctionCalls": false,
   "prettier.singleQuote": true,
   "prettier.useTabs": false,
   "prettier.tabWidth": 2,
   "prettier.printWidth": 80,
   "prettier.jsxSingleQuote": false,
   "prettier.endOfLine": "lf",
-  "snippets.extends": {
-    "javascriptreact": ["javascript"],
-    "typescriptreact": ["javascript", "javascript-jasmine-arrow"],
-    "typescript": ["javascript", "javascript-jasmine-arrow"]
-  },
   "css.validate": false
 }
