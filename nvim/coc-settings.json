@@ -10,7 +10,9 @@
     "typescript.tsx",
     "graphql",
     "svelte",
-    "html"
+    "html",
+    "dart",
+    "scss"
   ],
   "javascript.suggest.completeFunctionCalls": false,
   "typescript.suggest.completeFunctionCalls": false,
