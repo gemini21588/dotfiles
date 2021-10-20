@@ -1,13 +1,7 @@
 " Specify a directory for plugins
 call plug#begin()
 " Themes
-"Plug 'morhetz/gruvbox'
 Plug 'rafi/awesome-vim-colorschemes'
-" Plug 'bluz71/vim-moonfly-colors'
-"Plug 'vim-airline/vim-airline'
-"Plug 'vim-airline/vim-airline-themes'
-" Plug 'tomasiser/vim-code-dark'
-"Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 Plug 'itchyny/lightline.vim'
 Plug 'mengelbrecht/lightline-bufferline'
 
@@ -21,8 +15,9 @@ Plug 'Yggdroot/indentLine'
 Plug 'sheerun/vim-polyglot' " syntax highlight
 Plug 'evanleck/vim-svelte', {'branch': 'main'}
 Plug 'ap/vim-css-color'
+Plug 'dart-lang/dart-vim-plugin'
 
-" Intellisense
+" Intellisense, snippets
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mattn/emmet-vim'
 Plug 'dominikduda/vim_es7_javascript_react_snippets'
@@ -30,13 +25,12 @@ Plug 'rodrigore/coc-tailwind-intellisense', {'do': 'npm install'}
 
 " Code Utils
 Plug 'preservim/nerdcommenter'
-" Plug 'scrooloose/nerdcommenter'
-" Plug 'tpope/vim-commentary'
 Plug 'tomtom/tcomment_vim'
 Plug 'AndrewRadev/tagalong.vim' " rename html tags
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-surround'
 Plug 'alvan/vim-closetag'
+Plug 'terryma/vim-multiple-cursors'
 
 " Search
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -50,6 +44,8 @@ Plug 'junegunn/fzf.vim'
 Plug 'christoomey/vim-tmux-navigator' " navigate between panels
 Plug 'Shougo/context_filetype.vim'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'psliwka/vim-smoothie'
+Plug 'easymotion/vim-easymotion'
 
 " Initialize plugin system
 call plug#end()
@@ -61,20 +57,23 @@ let mapleader = "\<Space>"
 
 nnoremap J 5j
 nnoremap K 5k
-nnoremap H ^
-nnoremap L g_
+nnoremap H Hzz
+nnoremap L Lzz
 nnoremap <leader>j J
 inoremap jk <ESC>
-inoremap kj <ESC>
 vmap ++ <plug>NERDCommenterToggle
 nmap ++ <plug>NERDCommenterToggle
 nnoremap <leader>/ :noh<CR>
+nnoremap <M-Up> ddkP
+nnoremap <M-Down> ddjP
+vnoremap <M-Up> dkP
+vnoremap <M-Down> djP
 
 " Disable arrow keys
-"noremap <Up> <Nop>
-"noremap <Down> <Nop>
-"noremap <Left> <Nop>
-"noremap <Right> <Nop>
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+noremap <Left> <Nop>
+noremap <Right> <Nop>
 
 " Set vim default flags
 set mouse=a                 " enable mouse
@@ -146,7 +145,8 @@ imap <S-Right> <Esc>v<Right>
 "let g:airline_theme = 'papercolor'
 "let g:airline_solarized_bg = 'dark'
 let g:lightline = {
-      \ 'colorscheme': 'selenized_dark',
+      "\ 'colorscheme': 'selenized_dark',
+      \ 'colorscheme': 'ayu_dark',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'filename', 'modified' ] ]
       \ },
@@ -163,7 +163,6 @@ let g:lightline = {
       \ }
 let g:lightline#bufferline#clickable = 1
 let g:lightline.component_raw = {'buffers': 1}
-"colorscheme solarized8_flat " material
 
 " For Neovim 0.1.3 and 0.1.4 - https://github.com/neovim/neovim/pull/2198
 if (has('nvim'))
@@ -177,9 +176,8 @@ if (has('termguicolors'))
   set termguicolors
 endif
 
-colorscheme solarized8_high
-"colorscheme gruvbox
-" material
+"colorscheme solarized8_high
+colorscheme ayu
 
 
 " Transparent terminal background
@@ -264,6 +262,7 @@ inoremap <silent><expr> <Tab>
 
 " make <cr> select the first completion item and confirm the completion when no item has been selected
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
+inoremap <silent><expr> <C-j> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
 inoremap <silent><expr> <Tab> pumvisible() ? coc#_select_confirm() : "\<Tab>"
 
 " Use <c-space> to trigger completion.
@@ -364,13 +363,11 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 " let g:airline_theme='base16_twilight'
 "let g:airline#extensions#tabline#formatter = 'default'
 " airline navigation
-nnoremap <M-Right> :bn<cr>      " Alt+Right
-nnoremap <M-Left> :bp<cr>       " Alt+Left
+"nnoremap <M-Right> :bn<cr>      " Alt+Right
+"nnoremap <M-Left> :bp<cr>       " Alt+Left
+nmap <c-]> :bn<cr>      " Alt+Right
+nmap <c-[> :bp<cr>       " Alt+Left
 nnoremap <c-x> :bp \|bd #<cr>   " close current buffer
-
-" handle cursor position
-" inoremap <silent> <C-b> <Enter><Esc><S-o>
-imap <silent> ;; <Enter><Esc><S-o>
 
 " Setting fzf search file from root git directory
 " set wildmode=list:longest,list:full
@@ -439,3 +436,5 @@ endfu
 
 let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js,*.ts,*.jsx,*.tsx'
 let g:closetag_emptyTags_caseSensitive = 1
+
+let g:dart_style_guide = 2
