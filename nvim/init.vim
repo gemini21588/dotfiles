@@ -380,7 +380,7 @@ endfunction
 
 command! ProjectFiles execute 'Files' s:find_git_root()
 nnoremap <leader>ff :ProjectFiles<CR>
-nnoremap <leader>fr :Rg<CR>
+nnoremap <leader>rg :Rg<CR>
 
 " remove trailing whitespace on save
 "autocmd BufWritePre * %s/\s\+$//e
