@@ -22,6 +22,10 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mattn/emmet-vim'
 Plug 'dominikduda/vim_es7_javascript_react_snippets'
 Plug 'rodrigore/coc-tailwind-intellisense', {'do': 'npm install'}
+"Plug 'iamcco/coc-tailwindcss',  {'do': 'yarn install --frozen-lockfile && yarn run build'}
+Plug 'SirVer/ultisnips'
+Plug 'mlaursen/vim-react-snippets'
+Plug 'OmniSharp/omnisharp-vim'
 
 " Code Utils
 Plug 'preservim/nerdcommenter'
@@ -30,7 +34,11 @@ Plug 'AndrewRadev/tagalong.vim' " rename html tags
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-surround'
 Plug 'alvan/vim-closetag'
-Plug 'terryma/vim-multiple-cursors'
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+Plug 'valloric/MatchTagAlways'
+
+" Debugger
+Plug 'puremourning/vimspector'
 
 " Search
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -46,6 +54,7 @@ Plug 'Shougo/context_filetype.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'psliwka/vim-smoothie'
 Plug 'easymotion/vim-easymotion'
+Plug 'dense-analysis/ale'
 
 " Initialize plugin system
 call plug#end()
@@ -61,6 +70,7 @@ nnoremap H Hzz
 nnoremap L Lzz
 nnoremap <leader>j J
 inoremap jk <ESC>
+inoremap kj <ESC>
 vmap ++ <plug>NERDCommenterToggle
 nmap ++ <plug>NERDCommenterToggle
 nnoremap <leader>/ :noh<CR>
@@ -189,6 +199,7 @@ highlight SignColumn ctermbg=NONE guibg=NONE
 " Open NERDTree automatically
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * NERDTree
+autocmd VimEnter * wincmd p
 autocmd BufEnter NERD_tree* :LeadingSpaceDisable
 
 let g:NERDTreeGitStatusWithFlags = 1
@@ -365,8 +376,10 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 " airline navigation
 "nnoremap <M-Right> :bn<cr>      " Alt+Right
 "nnoremap <M-Left> :bp<cr>       " Alt+Left
-nmap <c-]> :bn<cr>      " Alt+Right
-nmap <c-[> :bp<cr>       " Alt+Left
+"nmap <c-{> :bn<cr>
+"nmap <c-}> :bp<cr>
+nnoremap <leader>[ :bp<cr>
+nnoremap <leader>] :bn<cr>
 nnoremap <c-x> :bp \|bd #<cr>   " close current buffer
 
 " Setting fzf search file from root git directory
@@ -378,9 +391,12 @@ function! s:find_git_root()
   return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
 endfunction
 
+command! -bang -nargs=* PRg
+  \ call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'dir': system('git -C '.expand('%:p:h').' rev-parse --show-toplevel 2> /dev/null')[:-2]}, <bang>0)
+
 command! ProjectFiles execute 'Files' s:find_git_root()
 nnoremap <leader>ff :ProjectFiles<CR>
-nnoremap <leader>rg :Rg<CR>
+nnoremap <leader>rg :PRg<CR>
 
 " remove trailing whitespace on save
 "autocmd BufWritePre * %s/\s\+$//e
@@ -438,3 +454,81 @@ let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js,*.ts,*.jsx,*.tsx'
 let g:closetag_emptyTags_caseSensitive = 1
 
 let g:dart_style_guide = 2
+
+let g:UltiSnipsExpandTrigger='<c-c>'
+
+" Don't autoselect first omnicomplete option, show options even if there is only
+" one (so the preview documentation is accessible). Remove 'preview', 'popup'
+" and 'popuphidden' if you don't want to see any documentation whatsoever.
+" Note that neovim does not support `popuphidden` or `popup` yet:
+" https://github.com/neovim/neovim/issues/10996
+if has('patch-8.1.1880')
+  set completeopt=longest,menuone,popuphidden
+  " Highlight the completion documentation popup background/foreground the same as
+  " the completion menu itself, for better readability with highlighted
+  " documentation.
+  set completepopup=highlight:Pmenu,border:off
+else
+  set completeopt=longest,menuone,preview
+  " Set desired preview window height for viewing documentation.
+  set previewheight=5
+endif
+
+" Tell ALE to use OmniSharp for linting C# files, and no other linters.
+let g:ale_linters = { 'cs': ['OmniSharp'] }
+
+augroup omnisharp_commands
+  autocmd!
+
+  " Show type information automatically when the cursor stops moving.
+  " Note that the type is echoed to the Vim command line, and will overwrite
+  " any other messages in this space including e.g. ALE linting messages.
+  autocmd CursorHold *.cs OmniSharpTypeLookup
+
+  " The following commands are contextual, based on the cursor position.
+  autocmd FileType cs nmap <silent> <buffer> gd <Plug>(omnisharp_go_to_definition)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>osfu <Plug>(omnisharp_find_usages)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>osfi <Plug>(omnisharp_find_implementations)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>ospd <Plug>(omnisharp_preview_definition)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>ospi <Plug>(omnisharp_preview_implementations)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>ost <Plug>(omnisharp_type_lookup)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>osd <Plug>(omnisharp_documentation)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>osfs <Plug>(omnisharp_find_symbol)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>osfx <Plug>(omnisharp_fix_usings)
+  autocmd FileType cs nmap <silent> <buffer> <C-\> <Plug>(omnisharp_signature_help)
+  autocmd FileType cs imap <silent> <buffer> <C-\> <Plug>(omnisharp_signature_help)
+
+  " Navigate up and down by method/property/field
+  autocmd FileType cs nmap <silent> <buffer> [[ <Plug>(omnisharp_navigate_up)
+  autocmd FileType cs nmap <silent> <buffer> ]] <Plug>(omnisharp_navigate_down)
+  " Find all code errors/warnings for the current solution and populate the quickfix window
+  autocmd FileType cs nmap <silent> <buffer> <Leader>osgcc <Plug>(omnisharp_global_code_check)
+  " Contextual code actions (uses fzf, vim-clap, CtrlP or unite.vim selector when available)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>osca <Plug>(omnisharp_code_actions)
+  autocmd FileType cs xmap <silent> <buffer> <Leader>osca <Plug>(omnisharp_code_actions)
+  " Repeat the last code action performed (does not use a selector)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>os. <Plug>(omnisharp_code_action_repeat)
+  autocmd FileType cs xmap <silent> <buffer> <Leader>os. <Plug>(omnisharp_code_action_repeat)
+
+  autocmd FileType cs nmap <silent> <buffer> <Leader>os= <Plug>(omnisharp_code_format)
+
+  autocmd FileType cs nmap <silent> <buffer> <Leader>osnm <Plug>(omnisharp_rename)
+
+  autocmd FileType cs nmap <silent> <buffer> <Leader>osre <Plug>(omnisharp_restart_server)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>osst <Plug>(omnisharp_start_server)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>ossp <Plug>(omnisharp_stop_server)
+augroup END
+
+" Enable snippet completion, using the ultisnips plugin
+ let g:OmniSharp_want_snippet=1
+
+" valloric/matchTagAlways filetypes setting
+let g:mta_filetypes = {
+    \ 'html' : 1,
+    \ 'xhtml' : 1,
+    \ 'xml' : 1,
+    \ 'jinja' : 1,
+    \ 'javascriptreact' : 1,
+    \}
+
+let g:vimspector_enable_mappings = 'HUMAN'

@@ -1,10 +1,10 @@
-snippet myrfc "create export function component without default"
+snippet myrfc "Create export function component without default"
 export function `!p snip.rv = fn[0: fn.rfind('.')]`() {
-	return <div className="$2">$3</div>;
+	return <div className="$1">${2:${VISUAL:`!p snip.rv = fn[0: fn.rfind('.')]`}}</div>;
 }
 endsnippet
 
-snippet tc "create try catch block"
+snippet tc "Create try catch block"
 try {
 	$1
 } catch (error) {

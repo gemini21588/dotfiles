@@ -25,6 +25,8 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 alias k="kubectl"
 alias n="nvim"
+alias lg="lazygit"
+alias o="open ."
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -102,7 +104,7 @@ ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=("${(@)ZSH_AUTOSUGGEST_ACCEPT_WIDGETS:#forward-ch
 # Add forward-char widgets to PARTIAL_ACCEPT
 ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS+=(forward-char)
 
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=60'
+#ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=60'
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
