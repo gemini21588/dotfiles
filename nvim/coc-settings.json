@@ -28,5 +28,6 @@
   "prettier.printWidth": 80,
   "prettier.jsxSingleQuote": false,
   "prettier.endOfLine": "lf",
-  "css.validate": false
+  "css.validate": false,
+  "python.pythonPath": "/opt/homebrew/bin/python3"
 }

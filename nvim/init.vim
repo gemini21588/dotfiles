@@ -35,10 +35,10 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-surround'
 Plug 'alvan/vim-closetag'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
-Plug 'valloric/MatchTagAlways'
+"Plug 'valloric/MatchTagAlways'
 
 " Debugger
-Plug 'puremourning/vimspector'
+"Plug 'puremourning/vimspector'
 
 " Search
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -111,7 +111,7 @@ set laststatus=2
 set showtabline=2
 set nohlsearch
 set noswapfile
-" set nowrap
+"set nowrap
 
 
 " vim-prettier
@@ -217,6 +217,7 @@ let g:NERDTreeColorMapCustom = {
 let g:NERDTreeIgnore = ['^node_modules$']
 let NERDTreeAutoDeleteBuffer = 1
 let NERDTreeMinimalUI = 1
+let NERDTreeCascadeSingleChildDir=0
 
 " sync open file with NERDTree
 " " Check if NERDTree is open or active
@@ -347,6 +348,7 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 
 " Add status line support, for integration with other plugin, checkout `:h coc-status`
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
 
 " Using CocList
 " Show all diagnostics

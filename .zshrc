@@ -1,3 +1,9 @@
+# Fig pre block. Keep at the top of this file.
+export PATH="${PATH}:${HOME}/.local/bin"
+eval "$(fig init zsh pre)"
+
+
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -27,6 +33,8 @@ alias k="kubectl"
 alias n="nvim"
 alias lg="lazygit"
 alias o="open ."
+alias ll="ls -l"
+alias la="ls -al"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -109,7 +117,7 @@ ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS+=(forward-char)
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -137,3 +145,8 @@ ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS+=(forward-char)
 
 #test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+
+
+
+# Fig post block. Keep at the bottom of this file.
+eval "$(fig init zsh post)"
