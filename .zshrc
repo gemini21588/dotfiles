@@ -1,9 +1,5 @@
 # Fig pre block. Keep at the top of this file.
-export PATH="${PATH}:${HOME}/.local/bin"
-eval "$(fig init zsh pre)"
-
-
-
+[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -35,6 +31,7 @@ alias lg="lazygit"
 alias o="open ."
 alias ll="ls -l"
 alias la="ls -al"
+alias clr="clear"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -104,7 +101,9 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-bindkey '^ ' forward-word
+# bindkey '^ ' forward-word
+# bindkey "^[[1;5D" backward-word
+# bindkey "^[[1;5C" forward-word
 
 # Remove forward-char widgets from ACCEPT
 ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=("${(@)ZSH_AUTOSUGGEST_ACCEPT_WIDGETS:#forward-char}")
@@ -145,8 +144,7 @@ export LANG=en_US.UTF-8
 
 #test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-
-
+bindkey -v
 
 # Fig post block. Keep at the bottom of this file.
-eval "$(fig init zsh post)"
+[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"

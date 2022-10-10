@@ -1,10 +1,11 @@
-snippet myrfc "Create export function component without default"
+snippet _rfc "Create export function component without default"
 export function `!p snip.rv = fn[0: fn.rfind('.')]`() {
-	return <div className="$1">${2:${VISUAL:`!p snip.rv = fn[0: fn.rfind('.')]`}}</div>;
+	return <div className="${1:`!p snip.rv = fn[0: fn.rfind('.')].lower()`}">${2:`!p snip.rv = fn[0: fn.rfind('.')]`}</div>;
 }
 endsnippet
 
-snippet mytc "Create try catch block"
+
+snippet _tc "Create try catch block"
 try {
 	$1
 } catch (error) {
@@ -12,6 +13,10 @@ try {
 }
 endsnippet
 
-snippet mysct "Self close tag"
+snippet _sct "Self close tag"
 <$1 />
+endsnippet
+
+snippet _dob "Create const destructure"
+const {$2} = $1;
 endsnippet

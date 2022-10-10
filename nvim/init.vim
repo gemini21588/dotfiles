@@ -22,7 +22,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mattn/emmet-vim'
 Plug 'dominikduda/vim_es7_javascript_react_snippets'
 Plug 'rodrigore/coc-tailwind-intellisense', {'do': 'npm install'}
-"Plug 'iamcco/coc-tailwindcss',  {'do': 'yarn install --frozen-lockfile && yarn run build'}
+Plug 'iamcco/coc-tailwindcss',  {'do': 'yarn install --frozen-lockfile && yarn run build'}
 Plug 'SirVer/ultisnips'
 Plug 'mlaursen/vim-react-snippets'
 Plug 'OmniSharp/omnisharp-vim'
@@ -38,7 +38,7 @@ Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 "Plug 'valloric/MatchTagAlways'
 
 " Debugger
-"Plug 'puremourning/vimspector'
+Plug 'puremourning/vimspector'
 
 " Search
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -380,8 +380,10 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 "nnoremap <M-Left> :bp<cr>       " Alt+Left
 "nmap <c-{> :bn<cr>
 "nmap <c-}> :bp<cr>
-nnoremap <leader>[ :bp<cr>
-nnoremap <leader>] :bn<cr>
+"nnoremap <leader>[ :bp<cr>
+"nnoremap <leader>] :bn<cr>
+nnoremap <c-[> :bp<cr>
+nnoremap <c-]> :bn<cr>
 nnoremap <c-x> :bp \|bd #<cr>   " close current buffer
 
 " Setting fzf search file from root git directory

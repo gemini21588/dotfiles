@@ -29,5 +29,6 @@
   "prettier.jsxSingleQuote": false,
   "prettier.endOfLine": "lf",
   "css.validate": false,
-  "python.pythonPath": "/opt/homebrew/bin/python3"
+  "python.pythonPath": "/opt/homebrew/bin/python3",
+  "svelte.enable-ts-plugin": true
 }
