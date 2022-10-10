@@ -1,0 +1,6 @@
+python.runLinting
+snippets.editSnippets
+editor.action.organizeImport
+eslint.manageLibraryExecution
+eslint.showOutputChannel
+prettier.formatFile
