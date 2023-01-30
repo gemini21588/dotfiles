@@ -30,8 +30,8 @@ alias n="nvim"
 alias lg="lazygit"
 alias o="open ."
 alias ll="ls -l"
-alias la="ls -al"
-alias clr="clear"
+alias la="ls -la"
+alias cl="clear"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -101,9 +101,9 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-# bindkey '^ ' forward-word
+bindkey '^ ' forward-word
 # bindkey "^[[1;5D" backward-word
-# bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5C" autosuggest-accept
 
 # Remove forward-char widgets from ACCEPT
 ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=("${(@)ZSH_AUTOSUGGEST_ACCEPT_WIDGETS:#forward-char}")
@@ -144,7 +144,9 @@ export LANG=en_US.UTF-8
 
 #test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-bindkey -v
+#bindkey -v
+
+eval "$(rbenv init - zsh)"
 
 # Fig post block. Keep at the bottom of this file.
 [[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"

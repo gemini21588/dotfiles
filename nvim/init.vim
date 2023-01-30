@@ -7,7 +7,8 @@ Plug 'mengelbrecht/lightline-bufferline'
 
 " UI
 Plug 'scrooloose/nerdtree'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+"Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'johnstef99/vim-nerdtree-syntax-highlight'
 Plug 'ryanoasis/vim-devicons'
 
 " Code formater, syntax highlight
@@ -16,6 +17,7 @@ Plug 'sheerun/vim-polyglot' " syntax highlight
 Plug 'evanleck/vim-svelte', {'branch': 'main'}
 Plug 'ap/vim-css-color'
 Plug 'dart-lang/dart-vim-plugin'
+Plug 'prisma/vim-prisma'
 
 " Intellisense, snippets
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -26,16 +28,18 @@ Plug 'iamcco/coc-tailwindcss',  {'do': 'yarn install --frozen-lockfile && yarn r
 Plug 'SirVer/ultisnips'
 Plug 'mlaursen/vim-react-snippets'
 Plug 'OmniSharp/omnisharp-vim'
+Plug 'tomlion/vim-solidity'
 
 " Code Utils
 Plug 'preservim/nerdcommenter'
 Plug 'tomtom/tcomment_vim'
-Plug 'AndrewRadev/tagalong.vim' " rename html tags
+"Plug 'AndrewRadev/tagalong.vim' " rename html tags
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-surround'
 Plug 'alvan/vim-closetag'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
-"Plug 'valloric/MatchTagAlways'
+Plug 'valloric/MatchTagAlways'
+"Plug 'leafOfTree/vim-matchtag'
 
 " Debugger
 Plug 'puremourning/vimspector'
@@ -47,6 +51,7 @@ Plug 'junegunn/fzf.vim'
 " Git Utils
 "Plug 'Xuyuanp/nerdtree-git-plugin'
 "Plug 'airblade/vim-gitgutter'
+Plug 'itchyny/vim-gitbranch'
 
 " Utilities
 Plug 'christoomey/vim-tmux-navigator' " navigate between panels
@@ -55,6 +60,7 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'psliwka/vim-smoothie'
 Plug 'easymotion/vim-easymotion'
 Plug 'dense-analysis/ale'
+"Plug 'voldikss/vim-floaterm'
 
 " Initialize plugin system
 call plug#end()
@@ -78,6 +84,11 @@ nnoremap <M-Up> ddkP
 nnoremap <M-Down> ddjP
 vnoremap <M-Up> dkP
 vnoremap <M-Down> djP
+
+imap <C-j> <CR>
+nmap <C-a> ggVG
+map <Enter> o<ESC>
+map <S-Enter> O<ESC>
 
 " Disable arrow keys
 noremap <Up> <Nop>
@@ -112,6 +123,7 @@ set showtabline=2
 set nohlsearch
 set noswapfile
 "set nowrap
+"set foldmethod=syntax
 
 
 " vim-prettier
@@ -169,10 +181,22 @@ let g:lightline = {
       \ },
       \ 'component_type': {
       \   'buffers': 'tabsel'
+      \ },
+      \ 'component_function': {
+      \   'filename': 'LightlineFilename',
       \ }
       \ }
 let g:lightline#bufferline#clickable = 1
 let g:lightline.component_raw = {'buffers': 1}
+
+function! LightlineFilename()
+  let root = fnamemodify(get(b:, 'gitbranch_path'), ':h:h')
+  let path = expand('%:p')
+  if path[:len(root)-1] ==# root
+    return path[len(root)+1:]
+  endif
+  return expand('%')
+endfunction
 
 " For Neovim 0.1.3 and 0.1.4 - https://github.com/neovim/neovim/pull/2198
 if (has('nvim'))
@@ -274,7 +298,7 @@ inoremap <silent><expr> <Tab>
 
 " make <cr> select the first completion item and confirm the completion when no item has been selected
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
-inoremap <silent><expr> <C-j> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
+"inoremap <silent><expr> <C-j> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
 inoremap <silent><expr> <Tab> pumvisible() ? coc#_select_confirm() : "\<Tab>"
 
 " Use <c-space> to trigger completion.
@@ -389,7 +413,7 @@ nnoremap <c-x> :bp \|bd #<cr>   " close current buffer
 " Setting fzf search file from root git directory
 " set wildmode=list:longest,list:full
 set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
-let $FZF_DEFAULT_COMMAND =  "find * -path '*/\.*' -prune -o -path 'node_modules/**' -prune -o -path 'target/**' -prune -o -path 'dist/**' -prune -o  -type f -print -o -type l -print 2> /dev/null"
+let $FZF_DEFAULT_COMMAND =  "find * -path '*/\.*' -prune -o -path '**node_modules/**' -prune -o -path 'target/**' -prune -o -path 'dist/**' -prune -o  -type f -print -o -type l -print 2> /dev/null"
 
 function! s:find_git_root()
   return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
@@ -399,13 +423,13 @@ command! -bang -nargs=* PRg
   \ call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'dir': system('git -C '.expand('%:p:h').' rev-parse --show-toplevel 2> /dev/null')[:-2]}, <bang>0)
 
 command! ProjectFiles execute 'Files' s:find_git_root()
-nnoremap <leader>ff :ProjectFiles<CR>
-nnoremap <leader>rg :PRg<CR>
+nnoremap <silent> <expr> <c-space> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":ProjectFiles<CR>"
+nnoremap <silent> <expr> <c-f> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":PRg<CR>"
 
 " remove trailing whitespace on save
 "autocmd BufWritePre * %s/\s\+$//e
 
-let g:tagalong_additional_filetypes = ['svelte']
+"let g:tagalong_additional_filetypes = ['svelte']
 
 " Settings: context_filetype
 
@@ -524,7 +548,7 @@ augroup omnisharp_commands
 augroup END
 
 " Enable snippet completion, using the ultisnips plugin
- let g:OmniSharp_want_snippet=1
+ "let g:OmniSharp_want_snippet=1
 
 " valloric/matchTagAlways filetypes setting
 let g:mta_filetypes = {
@@ -533,6 +557,20 @@ let g:mta_filetypes = {
     \ 'xml' : 1,
     \ 'jinja' : 1,
     \ 'javascriptreact' : 1,
+    \ 'typescriptreact' : 1,
     \}
+nnoremap <leader>% :MtaJumpToOtherTag<cr>
 
+"let g:vim_matchtag_enable_by_default = 1
+"let g:vim_matchtag_files = '*.html,*.xml,*.js,*.jsx,*.ts,*.tsx,*.vue,*.svelte,*.jsp'
+
+"let g:vimspector_base_dir='/Users/trungdam/.local/share/nvim/plugged/vimspector'
 let g:vimspector_enable_mappings = 'HUMAN'
+" mnemonic 'di' = 'debug inspect' (pick your own, if you prefer!)
+" for normal mode - the word under the cursor
+nmap <Leader>di <Plug>VimspectorBalloonEval
+" for visual mode, the visually selected text
+xmap <Leader>di <Plug>VimspectorBalloonEval
+
+"nnoremap <silent> <C-f>   :FloatermToggle<CR>
+"tnoremap <silent> <C-f>   <C-\><C-n>:FloatermToggle<CR>
