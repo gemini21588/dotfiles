@@ -33,5 +33,9 @@
   "css.validate": false,
   "python.pythonPath": "/opt/homebrew/bin/python3",
   "svelte.enable-ts-plugin": true,
-  "emmet.includeLanguages": {"scss": "css", "sass": "css"}
+  "emmet.includeLanguages": {
+    "scss": "css",
+    "sass": "css"
+  },
+  "@ignored/coc-solidity.telemetry": true
 }

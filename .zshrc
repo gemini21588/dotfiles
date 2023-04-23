@@ -144,7 +144,9 @@ export LANG=en_US.UTF-8
 
 #test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-#bindkey -v
+bindkey -v
+bindkey -M viins 'jk' vi-cmd-mode
+
 
 eval "$(rbenv init - zsh)"
 

@@ -32,7 +32,7 @@ Plug 'tomlion/vim-solidity'
 
 " Code Utils
 Plug 'preservim/nerdcommenter'
-Plug 'tomtom/tcomment_vim'
+"Plug 'tomtom/tcomment_vim'
 "Plug 'AndrewRadev/tagalong.vim' " rename html tags
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-surround'
@@ -89,6 +89,8 @@ imap <C-j> <CR>
 nmap <C-a> ggVG
 map <Enter> o<ESC>
 map <S-Enter> O<ESC>
+map <silent> <expr> <leader>ma (expand('%') =~ 'NERD_tree' ? "" : "\<c-w>\<c-w>")."ma"
+map <silent> <expr> <leader>md (expand('%') =~ 'NERD_tree' ? "" : "\<c-w>\<c-w>")."md"
 
 " Disable arrow keys
 noremap <Up> <Nop>
@@ -242,6 +244,7 @@ let g:NERDTreeIgnore = ['^node_modules$']
 let NERDTreeAutoDeleteBuffer = 1
 let NERDTreeMinimalUI = 1
 let NERDTreeCascadeSingleChildDir=0
+let NERDTreeShowHidden=1
 
 " sync open file with NERDTree
 " " Check if NERDTree is open or active
@@ -406,8 +409,8 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 "nmap <c-}> :bp<cr>
 "nnoremap <leader>[ :bp<cr>
 "nnoremap <leader>] :bn<cr>
-nnoremap <c-[> :bp<cr>
-nnoremap <c-]> :bn<cr>
+nnoremap <silent> <expr> <c-[> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":bp<CR>"
+nnoremap <silent> <expr> <c-]> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":bn<CR>"
 nnoremap <c-x> :bp \|bd #<cr>   " close current buffer
 
 " Setting fzf search file from root git directory

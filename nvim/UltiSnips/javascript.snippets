@@ -1,11 +1,11 @@
-snippet _rfc "Create export function component without default"
+snippet rfc "Create a export function component without default" w
 export function `!p snip.rv = fn[0: fn.rfind('.')]`() {
 	return <div className="${1:`!p snip.rv = fn[0: fn.rfind('.')].lower()`}">${2:`!p snip.rv = fn[0: fn.rfind('.')]`}</div>;
 }
 endsnippet
 
 
-snippet _tc "Create try catch block"
+snippet tc "Create try catch block"
 try {
 	$2
 } catch (err) {
@@ -14,9 +14,13 @@ try {
 endsnippet
 
 snippet __ "Self close tag" i
+$1 />
+endsnippet
+
+snippet ___ "Self close tag" i
 <$1 />
 endsnippet
 
-snippet _dob "Create const destructure"
-const {$2} = $1;
+snippet cst "Create destructor const" b
+const { $2 } = $1;
 endsnippet
