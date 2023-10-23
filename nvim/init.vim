@@ -24,7 +24,6 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mattn/emmet-vim'
 Plug 'dominikduda/vim_es7_javascript_react_snippets'
 Plug 'rodrigore/coc-tailwind-intellisense', {'do': 'npm install'}
-Plug 'iamcco/coc-tailwindcss',  {'do': 'yarn install --frozen-lockfile && yarn run build'}
 Plug 'SirVer/ultisnips'
 Plug 'mlaursen/vim-react-snippets'
 Plug 'OmniSharp/omnisharp-vim'
@@ -33,7 +32,7 @@ Plug 'tomlion/vim-solidity'
 " Code Utils
 Plug 'preservim/nerdcommenter'
 "Plug 'tomtom/tcomment_vim'
-"Plug 'AndrewRadev/tagalong.vim' " rename html tags
+Plug 'AndrewRadev/tagalong.vim' " rename html tags
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-surround'
 Plug 'alvan/vim-closetag'
@@ -240,7 +239,7 @@ let g:NERDTreeColorMapCustom = {
     \ "Clean"     : "#87939A",
     \ "Ignored"   : "#808080"
     \ }
-let g:NERDTreeIgnore = ['^node_modules$']
+let g:NERDTreeIgnore = ['^node_modules$', '^.git$', '^.DS_Store$']
 let NERDTreeAutoDeleteBuffer = 1
 let NERDTreeMinimalUI = 1
 let NERDTreeCascadeSingleChildDir=0
@@ -416,14 +415,15 @@ nnoremap <c-x> :bp \|bd #<cr>   " close current buffer
 " Setting fzf search file from root git directory
 " set wildmode=list:longest,list:full
 set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
-let $FZF_DEFAULT_COMMAND =  "find * -path '*/\.*' -prune -o -path '**node_modules/**' -prune -o -path 'target/**' -prune -o -path 'dist/**' -prune -o  -type f -print -o -type l -print 2> /dev/null"
+"let $FZF_DEFAULT_COMMAND =  "find * -path '*/\.*' -prune -o -path '**node_modules/**' -prune -o -path 'target/**' -prune -o -path 'dist/**' -prune -o  -type f -print -o -type l -print 2> /dev/null"
+let $FZF_DEFAULT_COMMAND="find . -path '*/\.*' -type d -prune -o -path '**node_modules/**' -prune -o -type f -print -o -type l -print 2> /dev/null | sed s/^..//"
 
 function! s:find_git_root()
   return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
 endfunction
 
 command! -bang -nargs=* PRg
-  \ call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'dir': system('git -C '.expand('%:p:h').' rev-parse --show-toplevel 2> /dev/null')[:-2]}, <bang>0)
+  \ call fzf#vim#grep("rg --hidden --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'dir': system('git -C '.expand('%:p:h').' rev-parse --show-toplevel 2> /dev/null')[:-2]}, <bang>0)
 
 command! ProjectFiles execute 'Files' s:find_git_root()
 nnoremap <silent> <expr> <c-space> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":ProjectFiles<CR>"
@@ -432,7 +432,7 @@ nnoremap <silent> <expr> <c-f> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : ''
 " remove trailing whitespace on save
 "autocmd BufWritePre * %s/\s\+$//e
 
-"let g:tagalong_additional_filetypes = ['svelte']
+let g:tagalong_additional_filetypes = ['svelte']
 
 " Settings: context_filetype
 
@@ -577,3 +577,5 @@ xmap <Leader>di <Plug>VimspectorBalloonEval
 
 "nnoremap <silent> <C-f>   :FloatermToggle<CR>
 "tnoremap <silent> <C-f>   <C-\><C-n>:FloatermToggle<CR>
+
+inoremap <expr> <cr> getline('.')[col('.') - 1 - 1:col('.')-1] == '><' ? '<cr><c-o>O': '<cr>'
