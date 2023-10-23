@@ -3,6 +3,7 @@
 -- Add any additional keymaps here
 
 vim.keymap.set("i", "jk", "<ESC>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-a>", "ggVG", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-[>", ":bp<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-]>", ":bn<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<M-]>", ":bn<CR>", { noremap = true, silent = true })
@@ -10,7 +11,7 @@ vim.keymap.set("n", "<M-[>", ":bp<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-q>", ":qa!<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<CR>", "o<ESC>", { noremap = true, silent = true })
 
-vim.keymap.set("v", 'ya', '"ay', { noremap = true, silent = true })
+vim.keymap.set("v", "ya", '"ay', { noremap = true, silent = true })
 vim.keymap.set("n", "yaa", '"ayy', { noremap = true, silent = true })
 vim.keymap.set({ "n", "v" }, "pa", '"ap', { noremap = true, silent = true })
 vim.keymap.set({ "n", "v" }, "Pa", '"aP', { noremap = true, silent = true })

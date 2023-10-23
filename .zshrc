@@ -91,6 +91,9 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
+# bindkey -v
+# bindkey -M viins 'jk' vi-cmd-mode
+
 bindkey '^ ' forward-word
 # bindkey "^[[1;5D" backward-word
 bindkey "^[[1;5C" autosuggest-accept
@@ -128,6 +131,7 @@ export LANG=en_US.UTF-8
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 alias o="open ."
+alias py="python3"
 
 source ~/dotfiles/.common-alias.zsh
 
@@ -135,9 +139,6 @@ source ~/dotfiles/.common-alias.zsh
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 #test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-#bindkey -v
-#bindkey -M viins 'jk' vi-cmd-mode
 
 
 eval "$(rbenv init - zsh)"
