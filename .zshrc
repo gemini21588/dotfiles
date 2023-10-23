@@ -1,5 +1,3 @@
-# Fig pre block. Keep at the top of this file.
-[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -24,14 +22,6 @@ source $(brew --prefix nvm)/nvm.sh
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="powerlevel10k/powerlevel10k"
-
-alias k="kubectl"
-alias n="nvim"
-alias lg="lazygit"
-alias o="open ."
-alias ll="ls -l"
-alias la="ls -la"
-alias cl="clear"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -136,19 +126,35 @@ export LANG=en_US.UTF-8
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias n="nvim"
+alias k="kubectl"
+alias lg="lazygit"
+alias o="open ."
+alias ll="ls -l"
+alias la="ls -la"
+alias cl="clear"
+
+alias gcod="git checkout develop"
+alias gcom="git checkout master"
+alias gcrp="git cherry-pick $1"
+alias grbom="git rebase origin/master"
+alias grbod="git rebase origin/develop"
+alias gpll="git pull --rebase"
+alias gcon="git checkout -b $1"
+alias gcmm="git commit -m $1"
+alias gfp="git fetch -p"
+alias gpuoh="git push -u origin HEAD"
+alias gpfoh="git push -f origin HEAD"
+alias gcma="git commit --amend"
+alias gstu="git stash -u"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 #test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-bindkey -v
-bindkey -M viins 'jk' vi-cmd-mode
+#bindkey -v
+#bindkey -M viins 'jk' vi-cmd-mode
 
 
 eval "$(rbenv init - zsh)"
-
-# Fig post block. Keep at the bottom of this file.
-[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
