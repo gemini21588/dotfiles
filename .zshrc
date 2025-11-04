@@ -84,12 +84,15 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 # plugins=(git)
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting autojump)
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting autojump zsh-vi-mode)
 # plugins=(autojump)
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
+ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
+
+bindkey -M viins '^ ' autosuggest-accept
 
 bindkey '^ ' forward-word
 # bindkey "^[[1;5D" backward-word
