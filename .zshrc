@@ -92,11 +92,12 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
 
-bindkey -M viins '^ ' autosuggest-accept
+bindkey -M viins '^ ' forward-word
+bindkey -M viins "^[[1;5C" autosuggest-accept
 
-bindkey '^ ' forward-word
+#bindkey '^ ' autosuggest-accept
 # bindkey "^[[1;5D" backward-word
-bindkey "^[[1;5C" autosuggest-accept
+#bindkey "^[[1;5C" forward-word
 
 # Remove forward-char widgets from ACCEPT
 ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=("${(@)ZSH_AUTOSUGGEST_ACCEPT_WIDGETS:#forward-char}")
